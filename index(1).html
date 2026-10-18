@@ -6,14 +6,28 @@
           content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
         canvas {
             border: 1px solid black;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #scoreBoard {
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
     <h1>Snake</h1>
+    <div id="scoreBoard">Score: 0</div>
     <canvas id="gameCanvas" width="400"
             height="400"></canvas>
     <p id="info"></p>
@@ -78,12 +92,16 @@
                 );
             }
 
+            const scoreElement = document.getElementById("scoreBoard");
+
             if (isGameOver) {
+                scoreElement.textContent = `Score: ${score}`;
                 document.getElementById("info").textContent =
                     `Game over! Final score: ${score}. Press Space to restart.`;
                 return;
             }
 
+            scoreElement.textContent = `Score: ${score}`;
             document.getElementById("info").textContent =
                 `Score: ${score}`;
         };
