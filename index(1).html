@@ -60,6 +60,20 @@
 
         drawGame();
 
+        // ===== MOVEMENT =====
+        const moveSnake = () => {
+            const head = {
+                x: snake[0].x + direction.x,
+                y: snake[0].y + direction.y
+            };
+
+            snake.unshift(head);
+            snake.pop();
+            drawGame();
+        };
+
+        setInterval(moveSnake, 150);
+
         // ===================================
         // BUILD THE GAME FROM HERE
         // ===================================
@@ -68,7 +82,7 @@
         // to guide your work through each step. 
         // Commit regularly.
         //
-        // Step 1: Movement (game loop)
+        // Step 1: Movement (game loop) ✅
         // Step 2: Keyboard controls (arrow keys)
         // Step 3: Eating and growing
         // Step 4: Game over
