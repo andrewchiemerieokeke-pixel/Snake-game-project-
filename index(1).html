@@ -35,6 +35,20 @@
         let direction = { x: 1, y: 0 };
         let food = { x: 15, y: 15 };
         let score = 0;
+        let isGameOver = false;
+
+        const resetGame = () => {
+            snake = [
+                { x: 10, y: 10 },
+                { x: 9, y: 10 },
+                { x: 8, y: 10 }
+            ];
+            direction = { x: 1, y: 0 };
+            food = { x: 15, y: 15 };
+            score = 0;
+            isGameOver = false;
+            drawGame();
+        };
 
         const randomFoodPosition = () => {
             return {
@@ -64,6 +78,12 @@
                 );
             }
 
+            if (isGameOver) {
+                document.getElementById("info").textContent =
+                    `Game over! Final score: ${score}. Press Space to restart.`;
+                return;
+            }
+
             document.getElementById("info").textContent =
                 `Score: ${score}`;
         };
@@ -72,10 +92,31 @@
 
         // ===== MOVEMENT =====
         const moveSnake = () => {
+            if (isGameOver) return;
+
             const head = {
                 x: snake[0].x + direction.x,
                 y: snake[0].y + direction.y
             };
+
+            const hitWall =
+                head.x < 0 ||
+                head.x >= tileCount ||
+                head.y < 0 ||
+                head.y >= tileCount;
+
+            const hitSelf = snake.some(
+                (segment, index) =>
+                    index !== snake.length - 1 &&
+                    segment.x === head.x &&
+                    segment.y === head.y
+            );
+
+            if (hitWall || hitSelf) {
+                isGameOver = true;
+                drawGame();
+                return;
+            }
 
             snake.unshift(head);
 
@@ -93,6 +134,13 @@
 
         // ===== KEYBOARD CONTROLS =====
         document.addEventListener("keydown", (event) => {
+            if (event.key === " ") {
+                if (isGameOver) {
+                    resetGame();
+                }
+                return;
+            }
+
             const newDirection = {
                 ArrowUp: { x: 0, y: -1 },
                 ArrowDown: { x: 0, y: 1 },
@@ -101,6 +149,8 @@
             }[event.key];
 
             if (!newDirection) return;
+
+            if (isGameOver) return;
 
             const wouldReverse =
                 newDirection.x === -direction.x &&
@@ -121,8 +171,8 @@
         //
         // Step 1: Movement (game loop) ✅
         // Step 2: Keyboard controls (arrow keys) ✅
-        // Step 3: Eating and growing
-        // Step 4: Game over
+        // Step 3: Eating and growing ✅
+        // Step 4: Game over ✅
         // Step 5: Improvements
         //
         // ===================================
