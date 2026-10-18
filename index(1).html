@@ -36,6 +36,13 @@
         let food = { x: 15, y: 15 };
         let score = 0;
 
+        const randomFoodPosition = () => {
+            return {
+                x: Math.floor(Math.random() * tileCount),
+                y: Math.floor(Math.random() * tileCount)
+            };
+        };
+
         // ===== DRAWING =====
         const drawGame = () => {
             ctx.clearRect(0, 0,
@@ -56,6 +63,9 @@
                     gridSize, gridSize
                 );
             }
+
+            document.getElementById("info").textContent =
+                `Score: ${score}`;
         };
 
         drawGame();
@@ -68,7 +78,14 @@
             };
 
             snake.unshift(head);
-            snake.pop();
+
+            if (head.x === food.x && head.y === food.y) {
+                score += 1;
+                food = randomFoodPosition();
+            } else {
+                snake.pop();
+            }
+
             drawGame();
         };
 
