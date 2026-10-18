@@ -74,6 +74,26 @@
 
         setInterval(moveSnake, 150);
 
+        // ===== KEYBOARD CONTROLS =====
+        document.addEventListener("keydown", (event) => {
+            const newDirection = {
+                ArrowUp: { x: 0, y: -1 },
+                ArrowDown: { x: 0, y: 1 },
+                ArrowLeft: { x: -1, y: 0 },
+                ArrowRight: { x: 1, y: 0 }
+            }[event.key];
+
+            if (!newDirection) return;
+
+            const wouldReverse =
+                newDirection.x === -direction.x &&
+                newDirection.y === -direction.y;
+
+            if (!wouldReverse) {
+                direction = newDirection;
+            }
+        });
+
         // ===================================
         // BUILD THE GAME FROM HERE
         // ===================================
@@ -83,7 +103,7 @@
         // Commit regularly.
         //
         // Step 1: Movement (game loop) ✅
-        // Step 2: Keyboard controls (arrow keys)
+        // Step 2: Keyboard controls (arrow keys) ✅
         // Step 3: Eating and growing
         // Step 4: Game over
         // Step 5: Improvements
